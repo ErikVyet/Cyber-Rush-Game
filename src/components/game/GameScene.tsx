@@ -1,9 +1,13 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import { Physics, RapierRigidBody, RigidBody } from "@react-three/rapier";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Euler, MathUtils, Quaternion } from "three";
-import { RoadCluster, Spaceship } from "../common/Models";
+import AreaCluster from "../common/AreaCluster";
+import { ROAD_COUNT } from "../../constants/model";
+import { Direction } from "../../enums/Direction";
+import { GameContext } from "../../contexts/GameContext";
+import Spaceship from "../common/Spaceship";
 
 const MIN_X = -1;
 const MAX_X = 1;
@@ -13,26 +17,18 @@ const ACCELERATE_SPEED = 2;
 const ROLL_FACTOR = Math.PI / 12;
 const LANE_LAMBDA = 2;
 const ROLL_LAMBDA = 8;
-const ROAD_CLUSTER_SPAWN_SIZE = 100;
 
-type GameSceneProps = {
-    
-}
-
-export default function GameScene({ }: GameSceneProps) {
+export default function GameScene() {
     const shipRef = useRef<RapierRigidBody>(null!);
     const targetXRef = useRef(0);
     const currentZRef = useRef(0);
     const currentXRef = useRef(0);
     const currentSpeedRef = useRef(0);
     const currentRollRef = useRef(0);
-    const roadClusterIterationRef = useRef(1);
     
+    const [shipDirection] = useState<Direction>(Direction.NORTH);
     const [enableGenerateNextIteration, setEnableGenerateNextIteration] = useState(false);
-    const [roadClusters, setRoadClusters] = useState([
-        { id: 0, iteration: 0 },
-        { id: 1, iteration: 1 }
-    ]);
+    const [iteration, setIteration] = useState(0);
     
     useEffect(() => {
         const handleKeyDown = (_event: KeyboardEvent) => {
@@ -53,10 +49,7 @@ export default function GameScene({ }: GameSceneProps) {
     useEffect(() => {
         if (enableGenerateNextIteration) {
             const timeout = setTimeout(() => {
-                const nextIteration = ++roadClusterIterationRef.current;
-                setRoadClusters((prev) => {
-                    return [...prev.slice(1), { id: nextIteration, iteration: nextIteration }];
-                });
+                setIteration(prev => prev + 1);
                 setEnableGenerateNextIteration(false);
             }, 1000);
             return () => { clearTimeout(timeout); }
@@ -87,25 +80,21 @@ export default function GameScene({ }: GameSceneProps) {
 
         state.camera.position.set(0, 1, currentZRef.current + 4.5);
         state.camera.lookAt(0, 0, 0);
-
-        if (currentZRef.current % (ROAD_CLUSTER_SPAWN_SIZE * 2) < (0.5 - ROAD_CLUSTER_SPAWN_SIZE) * 2) {
+        
+        if (currentZRef.current % (ROAD_COUNT * 4) < 0.5 - (ROAD_COUNT * 4)) {
             setEnableGenerateNextIteration(true);
         }
     });
     
     return (
-        <>
+        <GameContext.Provider value={{ shipDirection }}>
             <Physics gravity={[0, 0, 0]}>
                 <RigidBody ref={shipRef} type={"kinematicPosition"} colliders={"hull"} enabledRotations={[false, true, true]}>
                     <Spaceship/>
                 </RigidBody>
                 <PerspectiveCamera position={[0, 1, 4.5]} lookAt={() => [0, 0, 0]} makeDefault/>
-                {roadClusters.map((road) => 
-                    <Fragment key={road.id}>
-                        <RoadCluster size={ROAD_CLUSTER_SPAWN_SIZE} iteration={road.iteration}/>
-                    </Fragment>
-                )}
+                <AreaCluster iteration={iteration}/>
             </Physics>
-        </>
+        </GameContext.Provider>
     );
 }
