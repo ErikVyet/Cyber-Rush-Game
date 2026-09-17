@@ -4,8 +4,7 @@ import { useModel } from "../../hooks/useModel";
 import type { Mesh } from "three";
 import { ROAD_COUNT, ROAD_LENGTH } from "../../constants/model";
 import { Color, MeshStandardMaterial } from "three";
-import { useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useMemo } from "react";
 
 type RoadProps = {
     iteration: number
@@ -14,14 +13,14 @@ type RoadProps = {
 export default function Road({ iteration }: RoadProps) {
     const { nodes: roadNodes } = useModel(ModelPath.ROAD);
 
-    const hueRef = useRef(0);
+    // const hueRef = useRef(0);
 
-    const material = useMemo(() => new MeshStandardMaterial({ color: new Color(Color.NAMES.red) }), []);
+    const material = useMemo(() => new MeshStandardMaterial({ color: new Color(Color.NAMES.royalblue) }), []);
 
-    useFrame((_, delta) => {
-        hueRef.current = (hueRef.current + delta * 0.1) % 1;
-        material.color.setHSL(hueRef.current, 1.0, 0.5);
-    });
+    // useFrame((_, delta) => {
+    //     hueRef.current = (hueRef.current + delta * 0.1) % 1;
+    //     material.color.setHSL(hueRef.current, 1.0, 0.5);
+    // });
 
     return (
         <Instances geometry={(roadNodes.Road_Road_0 as Mesh).geometry} material={material} position={[0, 0, -iteration * ROAD_COUNT * 4]} scale={0.4} rotation={[Math.PI / 2, Math.PI, Math.PI / 2]} receiveShadow>

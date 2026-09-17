@@ -45,10 +45,6 @@ export default function BuildingCluster({ iteration }: BuildingClusterProps) {
         return () => { clearTimeout(timeout); }
     }, [iteration]);
 
-    useEffect(() => {
-        console.log(buildings.length);
-    }, [buildings]);
-
     return (
         <group position={[0, 2.5, -1]} rotation={[-Math.PI / 2, 0, 0]} scale={3}>
             {buildings.map((building, index) =>

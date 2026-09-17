@@ -1,14 +1,14 @@
 import Sidewalk from "./Sidewalk";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Road from "./Road";
 import BuildingCluster from "./BuildingCluster";
+import { GameContext } from "../../contexts/GameContext";
 
-type AreaClusterProps = {
-    iteration: number
-}
-
-export default function AreaCluster({ iteration }: AreaClusterProps) {
-
+export default function AreaCluster() {
+    const gameContext = useContext(GameContext);
+    if (!gameContext) return null;
+    const { iteration } = gameContext;
+    
     useEffect(() => {
         
     }, [iteration]);
