@@ -6,44 +6,54 @@ import { useEffect, useState } from "react";
 import { Direction } from "../enums/Direction";
 import { TIME_MULTIPLIER } from "../constants/scene";
 import PauseDialog from "../components/game/PauseDialog";
-import { OrbitControls } from "@react-three/drei";
+// import { OrbitControls } from "@react-three/drei";
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import Header from "../components/game/Header";
 
 export default function Game() {
     const [timer, setTimer] = useState(0);
     const [shipDirection, setShipDirection] = useState<Direction>(Direction.NORTH);
+    const [shipHealth, setShipHealth] = useState(100);
+    const [coins, setCoins] = useState<[number, number, number, number]>([0, 0, 0, 0]);
     const [iteration, setIteration] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
     const [soundEffectVolumn, setSoundEffectVolumn] = useState(1);
     const [musicVolumn, setMusicVolumn] = useState(1);
 
     useEffect(() => {
+        const handleWindowBlurred = (_event: FocusEvent) => setIsRunning(false);
+        const handleEscPressed = (_event: KeyboardEvent) => setIsRunning(!(_event.key === "Escape"));
+
+        window.addEventListener("blur", handleWindowBlurred);
+        window.addEventListener("keydown", handleEscPressed);
+
+        return () => {
+            window.removeEventListener("blur", handleWindowBlurred);
+            window.removeEventListener("keydown", handleEscPressed);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!isRunning) return;
+
         const interval = setInterval(() => {
             if (isRunning) {
                 setTimer(prev => prev + 1);
             }
         }, 1000);
 
-        const handleWindowBlurred = (_event: FocusEvent) => {
-            setIsRunning(false);
-        };
-
-        window.addEventListener("blur", handleWindowBlurred);
-
-        return () => {
-            clearInterval(interval);
-            window.removeEventListener("blur", handleWindowBlurred); 
-        }
-    }, []);
+        return () => { clearInterval(interval); }
+    }, [isRunning]);
 
     return (
-        <GameContext.Provider value={{ timeMultiplier: TIME_MULTIPLIER, timer, isRunning, setIsRunning, iteration, setIteration, shipDirection, setShipDirection, soundEffectVolumn, setSoundEffectVolumn, musicVolumn, setMusicVolumn }}>
+        <GameContext.Provider value={{ timeMultiplier: TIME_MULTIPLIER, timer, isRunning, setIsRunning, iteration, setIteration, shipDirection, setShipDirection, shipHealth, setShipHealth, coins, setCoins, soundEffectVolumn, setSoundEffectVolumn, musicVolumn, setMusicVolumn }}>
             <Container className="min-h-screen max-h-max" maxWidth={false} disableGutters>
+                <Header/>
                 <Canvas className="h-screen!" shadows>
                     <ambientLight intensity={1} />
                     <directionalLight intensity={4} castShadow />
                     <axesHelper args={[2]} />
-                    <OrbitControls/>
+                    {/* <OrbitControls/> */}
                     <GameScene />
                     <EffectComposer>
                         <Bloom intensity={1} luminanceThreshold={4} luminanceSmoothing={2}/>

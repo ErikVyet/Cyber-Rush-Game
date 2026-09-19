@@ -2,13 +2,14 @@ import { useContext, useMemo } from "react";
 import { GameContext } from "../../contexts/GameContext";
 import { Button, Dialog, Stack, Typography } from "@mui/material";
 import { TEXT_COLOR_MUTUAL } from "../../constants/style";
+import { AudioPath } from "../../enums/AudioPath";
 
 export default function PauseDialog() {
     const gameContext = useContext(GameContext);
     if (!gameContext) return null;
     const { isRunning, setIsRunning } = gameContext;
 
-    const clickAudio = useMemo(() => new Audio("/sounds/button-click.mp3"), []);
+    const clickAudio = useMemo(() => new Audio(AudioPath.BUTTON_CLICK), []);
 
     const handlePlayClickrAudio = () => {
         clickAudio.volume = 1;

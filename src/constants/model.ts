@@ -1,3 +1,4 @@
+import { Color } from "three";
 
 export const ROAD_LENGTH = 10;
 export const ROAD_COUNT = 70;
@@ -42,4 +43,12 @@ export const BUILDING_MATERIALS = [
     "M_Rooftops_JFG",
     "M_Rooftops_JFG_NO_LIGHT",
     "M_Rooftops_JFG_NO_LIGHT_DAMAGED"
+];
+
+export const COIN_MESHES = [
+    "Object_4", "Object_5"
+];
+export const COIN_MATERIAL = "M_Bitcoin";
+export const COIN_VARIANT_COLORS = [
+    "#CB6D51", Color.NAMES.silver, Color.NAMES.gold, "#E0F7FA"
 ];

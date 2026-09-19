@@ -1,4 +1,3 @@
-import { PerspectiveCamera } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import AreaCluster from "../common/AreaCluster";
 import { GameContext } from "../../contexts/GameContext";
@@ -23,7 +22,6 @@ export default function GameScene() {
     return (
         <Physics gravity={[0, 0, 0]} debug>
             <Spaceship />
-            <PerspectiveCamera position={[0, 1, 4.5]} lookAt={() => [0, 0, 0]} makeDefault />
             <AreaCluster />
         </Physics>
     );
