@@ -2,9 +2,9 @@ import { Instance, Instances } from "@react-three/drei";
 import { ModelPath } from "../../enums/ModelPath";
 import { useModel } from "../../hooks/useModel";
 import type { Mesh } from "three";
-import { ROAD_COUNT, ROAD_LENGTH } from "../../constants/model";
 import { Color, MeshStandardMaterial } from "three";
 import { useMemo } from "react";
+import { ROAD_COUNT, ROAD_LENGTH } from "../../constants/scene";
 
 type RoadProps = {
     iteration: number

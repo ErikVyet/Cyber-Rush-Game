@@ -5,7 +5,7 @@ import { ModelPath } from "../../enums/ModelPath";
 import { COIN_MATERIAL, COIN_MESHES, COIN_VARIANT_COLORS } from "../../constants/model";
 import { useContext, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { COIN_LAMBDA, COIN_SPIN_SPEED } from "../../constants/scene";
+import { OBJECT_LAMBDA, COIN_SPIN_SPEED } from "../../constants/scene";
 import { GameContext } from "../../contexts/GameContext";
 import { ActiveCollisionTypes } from "@dimforge/rapier3d-compat";
 
@@ -33,7 +33,7 @@ export default function Coin({ position, variant = "copper", onIntersectionEnter
         const coin = coinRef.current;
         if (!mesh || !coin) return;
 
-        currentYRef.current = MathUtils.damp(currentYRef.current, Math.sin(state.clock.elapsedTime) / 6, COIN_LAMBDA * timeMultiplier, delta);
+        currentYRef.current = MathUtils.damp(currentYRef.current, Math.sin(state.clock.elapsedTime) / 6, OBJECT_LAMBDA * timeMultiplier, delta);
         currentRotYRef.current += COIN_SPIN_SPEED * timeMultiplier;
         currentRotRef.current.set(Math.PI / 2, 0, currentRotYRef.current);
 

@@ -9,3 +9,8 @@ export function useModel(model: ModelPath) {
 useGLTF.preload(ModelPath.ROAD);
 useGLTF.preload(ModelPath.BUILDINGS);
 useGLTF.preload(ModelPath.SPACE_SHIP);
+useGLTF.preload(ModelPath.DAMAGE_BOOST);
+useGLTF.preload(ModelPath.INVISIBLE);
+useGLTF.preload(ModelPath.MAGNET);
+useGLTF.preload(ModelPath.PERFORMANCE_BOOST);
+useGLTF.preload(ModelPath.REPAIR_KIT);

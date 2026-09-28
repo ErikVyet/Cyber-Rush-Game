@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { ModelPath } from "../../enums/ModelPath"
 import { useModel } from "../../hooks/useModel"
 import { MathUtils, Vector3, type Mesh } from "three";
-import { BUILDING_COUNT, BUILDING_GAP, BUILDING_MATERIALS, BUILDING_MESHES, ROAD_LENGTH } from "../../constants/model";
+import { BUILDING_MATERIALS, BUILDING_MESHES } from "../../constants/model";
+import { BUILDING_COUNT, BUILDING_GAP, ROAD_LENGTH } from "../../constants/scene";
 
 type BuildingClusterProps = {
     iteration: number

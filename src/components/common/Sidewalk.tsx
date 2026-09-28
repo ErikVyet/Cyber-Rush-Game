@@ -1,7 +1,7 @@
 import { useTexture } from "@react-three/drei";
-import { ROAD_COUNT, ROAD_LENGTH } from "../../constants/model";
 import { TexturePath } from "../../enums/TexturePath";
 import { RepeatWrapping } from "three";
+import { ROAD_COUNT, ROAD_LENGTH } from "../../constants/scene";
 
 type SidewalkProps = {
     iteration: number

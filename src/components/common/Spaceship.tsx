@@ -3,18 +3,17 @@ import { ModelPath } from "../../enums/ModelPath";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Euler, MathUtils, Quaternion, type Group } from "three";
 import type { Mesh } from "three";
-import { RigidBody, type RapierRigidBody } from "@react-three/rapier";
+import { CuboidCollider, MeshCollider, RigidBody, type RapierRigidBody } from "@react-three/rapier";
 import { GameContext } from "../../contexts/GameContext";
 import { useFrame } from "@react-three/fiber";
-import { ACCELERATE_SPEED, LANE_LAMBDA, LANE_WIDTH, MAX_TRAVEL_SPEED, MAX_X, MIN_X, ROLL_FACTOR, ROLL_LAMBDA } from "../../constants/scene";
-import { ROAD_COUNT } from "../../constants/model";
+import { ACCELERATE_SPEED, LANE_LAMBDA, LANE_WIDTH, MAX_HEIGHT, MAX_TRAVEL_SPEED, MAX_X, MIN_X, ROAD_COUNT, ROLL_FACTOR, ROLL_X_LAMBDA, ROLL_Y_LAMBDA } from "../../constants/scene";
 import { useModel } from "../../hooks/useModel";
 import LaserBeam from "./LaserBeam";
 
 export default function Spaceship() {
     const gameContext = useContext(GameContext);
     if (!gameContext) return null;
-    const { setIteration, timeMultiplier } = gameContext;
+    const { setIteration, timeMultiplier, powerUpDurations: { magnet, performanceBoost } } = gameContext;
 
     const gamePad = navigator.getGamepads()?.[1];
 
@@ -25,16 +24,20 @@ export default function Spaceship() {
     const groupRef = useRef<Group>(null!);
     const shipRef = useRef<RapierRigidBody>(null!);
     const targetXRef = useRef(0);
-    const currentZRef = useRef(0);
+    const targetYRef = useRef(0);
     const currentXRef = useRef(0);
+    const currentYRef = useRef(0);
+    const currentZRef = useRef(0);
     const currentSpeedRef = useRef(0);
-    const currentRollRef = useRef(0);
+    const currentXRollRef = useRef(0);
+    const currentYRollRef = useRef(0);
     const currentRotEulerRef = useRef(new Euler());
     const currentRotQuaternionRef = useRef(new Quaternion());
 
     const { actions, names } = useAnimations(animations, groupRef);
 
     const [enableGenerateNextIteration, setEnableGenerateNextIteration] = useState(false);
+    const [isShooting, setIsShooting] = useState(true);
 
     useEffect(() => {
         const action = actions[names[0]];
@@ -118,43 +121,71 @@ export default function Spaceship() {
         }
     }, [enableGenerateNextIteration]);
 
+    useEffect(() => {
+        if (performanceBoost > 0) {
+            targetYRef.current = MAX_HEIGHT;
+        }
+        else {
+            targetYRef.current = 0;
+        }
+    }, [performanceBoost]);
+
     useFrame((_, delta) => {
         const ship = shipRef.current;
         if (!ship) return;
 
-        // Calculate the spaceship's current speed
+        // Calculate spaceship's current speed
         currentSpeedRef.current = MathUtils.damp(currentSpeedRef.current, MAX_TRAVEL_SPEED, ACCELERATE_SPEED * timeMultiplier, delta);
 
-        // Calculate the shipship's current z position after speeding up
-        currentZRef.current -= currentSpeedRef.current * delta * timeMultiplier;
-
-        // Calculate the next spaceship's x position
+        // Calculate spaceship's next x position
         const targetX = targetXRef.current * LANE_WIDTH;
         currentXRef.current = MathUtils.damp(currentXRef.current, targetX, LANE_LAMBDA * timeMultiplier, delta);
 
-        const distanceToTarget = targetX - currentXRef.current;
-        const targetRoll = -distanceToTarget * ROLL_FACTOR;
+        // Calculate spaceship's next y position
+        currentYRef.current = MathUtils.damp(currentYRef.current, targetYRef.current, timeMultiplier, delta);
 
-        currentRollRef.current = MathUtils.damp(currentRollRef.current, targetRoll, ROLL_LAMBDA * timeMultiplier, delta);
-        currentRotEulerRef.current.set(0, 0, currentRollRef.current);
+        // Calculate shipship's current z position after speeding up
+        currentZRef.current -= currentSpeedRef.current * delta * timeMultiplier;
 
-        ship.setNextKinematicTranslation({ x: currentXRef.current, y: 0, z: currentZRef.current });
+        const distanceToTargetX = targetX - currentXRef.current;
+        const distanceToTargetY = targetYRef.current - currentYRef.current;
+        const targetXRoll = -distanceToTargetX * ROLL_FACTOR;
+        const targetYRoll = distanceToTargetY * ROLL_FACTOR;
+
+        currentXRollRef.current = MathUtils.damp(currentXRollRef.current, targetXRoll, ROLL_X_LAMBDA * timeMultiplier, delta);
+        currentYRollRef.current = MathUtils.damp(currentYRollRef.current, targetYRoll, ROLL_Y_LAMBDA * timeMultiplier, delta);
+
+        currentRotEulerRef.current.set(currentYRollRef.current, 0, currentXRollRef.current);
+
+        ship.setNextKinematicTranslation({ x: currentXRef.current, y: currentYRef.current, z: currentZRef.current });
         ship.setNextKinematicRotation(currentRotQuaternionRef.current.setFromEuler(currentRotEulerRef.current));
 
         if (currentZRef.current % (ROAD_COUNT * 4) < 0.5 - (ROAD_COUNT * 4)) {
             setEnableGenerateNextIteration(true);
         }
+
+        if (currentYRef.current <= 0.5 || currentYRef.current >= MAX_HEIGHT - 0.5) {
+            setIsShooting(true);
+        }
+        else {
+            setIsShooting(false);
+        }
     });
 
     return (
         <>
-            <RigidBody ref={shipRef} name={"player"} type={"kinematicPosition"} colliders={"hull"} enabledRotations={[false, true, true]}>
-                <group ref={groupRef} position={[0, 0, 0]} scale={0.03} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
-                    <primitive object={scene} />
-                </group>
-                <PerspectiveCamera position={[0, 1, 4.5]} lookAt={() => [0, 0, 0]} makeDefault />
+            <RigidBody ref={shipRef} name={"player"} type={"kinematicPosition"} colliders={false} enabledRotations={[false, true, true]}>
+                <MeshCollider type={"hull"}>
+                    <group ref={groupRef} position={[0, 0, 0]} scale={0.03} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
+                        <primitive object={scene} />
+                    </group>
+                </MeshCollider>
+                <CuboidCollider args={[0.8 * (magnet > 0 ? 6 : 1), 0.2 * (magnet > 0 ? 6 : 1), 0.9]} position={[0, 0, 0.6]}/>
+                <PerspectiveCamera position={[0, 1, 4.5]} lookAt={() => [0, 0, 0]} makeDefault/>
             </RigidBody>
-            <LaserBeam currentShipXRef={currentXRef} currentShipZRef={currentZRef}/>
+            {isShooting && (
+                <LaserBeam currentShipXRef={currentXRef} currentShipYRef={currentYRef} currentShipZRef={currentZRef}/>
+            )}
         </>
     );
 }

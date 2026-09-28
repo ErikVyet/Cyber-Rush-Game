@@ -1,10 +1,5 @@
 import { Color } from "three";
 
-export const ROAD_LENGTH = 10;
-export const ROAD_COUNT = 70;
-
-export const BUILDING_COUNT = ROAD_COUNT - (2 * Math.ceil(ROAD_COUNT / 10));
-export const BUILDING_GAP = 6.666;
 export const BUILDING_MESHES = [
     "SM_Rooftop_JFG_1_M_Rooftops_JFG_0",
     "SM_Rooftop_JFG_1_NO_LIGHT_DAMAGED_M_Rooftops_JFG_NO_LIGHT_DAMAGED_0",
@@ -52,3 +47,18 @@ export const COIN_MATERIAL = "M_Bitcoin";
 export const COIN_VARIANT_COLORS = [
     "#CB6D51", Color.NAMES.silver, Color.NAMES.gold, "#E0F7FA"
 ];
+
+export const DAMAGE_BOOST_MESH = "pCylinder4_blinn1_0";
+export const DAMAGE_BOOST_MATERIAL = "blinn1";
+
+export const INVISIBLE_MESH = "Cone007__0";
+export const INVISIBLE_MATERIAL = "Scene_-_Root";
+
+export const MAGNET_MESH = "PMagnet_STM_PMagnet_M_0";
+export const MAGNET_MATERIAL = "PMagnet_M";
+
+export const PERFORMANCE_BOOST_MESHES = ["pPlane1_phong1_0" , "pPlane1_Material_0_0"];
+export const PERFORMANCE_BOOST_MATERIALS = ["phong1", "Material_0"];
+
+export const REPAIR_KIT_MESH = "defaultMaterial";
+export const REPAIR_KIT_MATERIAL = "DefaultMaterial";

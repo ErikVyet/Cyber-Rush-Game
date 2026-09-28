@@ -15,7 +15,10 @@ export default function Game() {
     const [shipDirection, setShipDirection] = useState<Direction>(Direction.NORTH);
     const [shipHealth, setShipHealth] = useState(100);
     const [coins, setCoins] = useState<[number, number, number, number]>([0, 0, 0, 0]);
+    const [powerUpDurations, setPowerUpDurations] = useState<{ doublePoint: number, damageBoost: number, invisible: number, magnet: number, performanceBoost: number }>({ doublePoint: 0, damageBoost: 0, invisible: 0, magnet: 0, performanceBoost: 0 });
+    const [laserDamage, setLaserDamage] = useState(25);
     const [iteration, setIteration] = useState(0);
+    const [score, setScore] = useState(0);
     const [isRunning, setIsRunning] = useState(true);
     const [soundEffectVolumn, setSoundEffectVolumn] = useState(1);
     const [musicVolumn, setMusicVolumn] = useState(1);
@@ -46,7 +49,7 @@ export default function Game() {
     }, [isRunning]);
 
     return (
-        <GameContext.Provider value={{ timeMultiplier: TIME_MULTIPLIER, timer, isRunning, setIsRunning, iteration, setIteration, shipDirection, setShipDirection, shipHealth, setShipHealth, coins, setCoins, soundEffectVolumn, setSoundEffectVolumn, musicVolumn, setMusicVolumn }}>
+        <GameContext.Provider value={{ timeMultiplier: TIME_MULTIPLIER, timer, isRunning, setIsRunning, iteration, setIteration, score, setScore, shipDirection, setShipDirection, shipHealth, setShipHealth, coins, setCoins, powerUpDurations, setPowerUpDurations, laserDamage, setLaserDamage, soundEffectVolumn, setSoundEffectVolumn, musicVolumn, setMusicVolumn }}>
             <Container className="min-h-screen max-h-max" maxWidth={false} disableGutters>
                 <Header/>
                 <Canvas className="h-screen!" shadows>

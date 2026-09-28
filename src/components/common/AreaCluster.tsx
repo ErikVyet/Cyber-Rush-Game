@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import Road from "./Road";
 import BuildingCluster from "./BuildingCluster";
 import { GameContext } from "../../contexts/GameContext";
-import CoinCluster from "./CoinCluster";
+import ObjectCluster from "./ObjectCluster";
 
 export default function AreaCluster() {
     const gameContext = useContext(GameContext);
@@ -21,7 +21,7 @@ export default function AreaCluster() {
             <Road iteration={iteration + 1}/>
             <Sidewalk iteration={iteration + 1}/>
             <BuildingCluster iteration={iteration}/>
-            <CoinCluster iteration={iteration}/>
+            <ObjectCluster iteration={iteration}/>
         </group>
     );
 }
