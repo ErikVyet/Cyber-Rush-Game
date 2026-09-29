@@ -22,8 +22,8 @@ export const ROLL_Y_LAMBDA = 0.5;
 export const LANE_LAMBDA = 2;
 
 // Laser beam's constant properties
-export const LASER_BEAM_WIDTH = 0.02;
-export const LASER_BEAM_HEIGHT = 0.02;
+export const LASER_BEAM_WIDTH = 0.04;
+export const LASER_BEAM_HEIGHT = 0.04;
 export const LASER_BEAM_DEPTH = 0.5;
 export const LASER_BEAM_MAX_TRAVEL_DISTANCE = 40;
 export const LASER_BEAM_TRAVEL_SPEED = MAX_TRAVEL_SPEED + 6 * LASER_BEAM_MAX_TRAVEL_DISTANCE;

@@ -57,11 +57,11 @@ export default function PowerUpDurationsDisplay() {
 
     return (
         <List className="w-fit! px-4!">
-            {Object.keys(powerUpDurations).filter(key => powerUpDurations[key] > 0).map((key, index) => (
+            {Object.keys(powerUpDurations).filter(key => powerUpDurations[key as keyof typeof powerUpDurations] > 0).map((key, index) => (
                 <Tooltip title={key === "doublePoint" ? "Earn double point" : key === "damageBoost" ? "Damage Boost" : key === "invisible" ? "Immune to damage" : key === "magnet" ? "Increase item collection range" : "Increase speed"} placement={"right"} key={index}>
                     <ListItem className="gap-2" disableGutters>
                         <Box className="size-5" component={"img"} src={`/images/${key === "doublePoint" ? "double-point.png" : key === "damageBoost" ? "damage-boost.png" : key === "invisible" ? "invisible.png" : key === "magnet" ? "magnet.png" : "performance-boost.png"}`}/>
-                        <Typography className={`text-center font-jura! font-semibold! text-zinc-100!`}>00:{powerUpDurations[key] >= 10 ? powerUpDurations[key] : `0${powerUpDurations[key]}`}</Typography>
+                        <Typography className={`text-center font-jura! font-semibold! text-zinc-100!`}>00:{powerUpDurations[key as keyof typeof powerUpDurations] >= 10 ? powerUpDurations[key as keyof typeof powerUpDurations] : `0${powerUpDurations[key as keyof typeof powerUpDurations]}`}</Typography>
                     </ListItem>
                 </Tooltip>
             ))}
