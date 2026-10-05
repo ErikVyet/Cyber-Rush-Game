@@ -8,5 +8,7 @@ export enum ModelPath {
     INVISIBLE = "/models/invisible.glb",
     MAGNET = "/models/magnet.glb",
     PERFORMANCE_BOOST = "/models/performance-boost.glb",
-    REPAIR_KIT = "/models/repair-kit.glb"
+    REPAIR_KIT = "/models/repair-kit.glb",
+    EXPLOSIVE_BARREL = "/models/explosive-barrel.glb",
+    WALL = "/models/wall.glb"
 }

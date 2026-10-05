@@ -1,6 +1,7 @@
 import { Box, List, ListItem, Tooltip, Typography } from "@mui/material";
 import { useContext, useEffect } from "react";
 import { GameContext } from "../../contexts/GameContext";
+import { LASER_BEAM_BASE_DAMAGE } from "../../constants/scene";
 
 export default function PowerUpDurationsDisplay() {
     const gameContext = useContext(GameContext);
@@ -21,10 +22,11 @@ export default function PowerUpDurationsDisplay() {
             const damageBoostTimeout = setTimeout(() => {
                 setPowerUpDurations(prev => ({ ...prev, damageBoost: prev.damageBoost - 1 }));
             }, 1000);
+            setLaserDamage(LASER_BEAM_BASE_DAMAGE * 2);
             return () => { clearTimeout(damageBoostTimeout); }
         }
         else {
-            setLaserDamage(25);
+            setLaserDamage(LASER_BEAM_BASE_DAMAGE);
         }
     }, [powerUpDurations.damageBoost, isRunning]);
 

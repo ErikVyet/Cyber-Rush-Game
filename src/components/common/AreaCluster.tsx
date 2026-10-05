@@ -4,6 +4,7 @@ import Road from "./Road";
 import BuildingCluster from "./BuildingCluster";
 import { GameContext } from "../../contexts/GameContext";
 import ObjectCluster from "./ObjectCluster";
+import ObstacleCluster from "./ObstacleCluster";
 
 export default function AreaCluster() {
     const gameContext = useContext(GameContext);
@@ -22,6 +23,7 @@ export default function AreaCluster() {
             <Sidewalk iteration={iteration + 1}/>
             <BuildingCluster iteration={iteration}/>
             <ObjectCluster iteration={iteration}/>
+            <ObstacleCluster iteration={iteration}/>
         </group>
     );
 }

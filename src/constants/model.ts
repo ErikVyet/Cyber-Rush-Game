@@ -62,3 +62,9 @@ export const PERFORMANCE_BOOST_MATERIALS = ["phong1", "Material_0"];
 
 export const REPAIR_KIT_MESH = "defaultMaterial";
 export const REPAIR_KIT_MATERIAL = "DefaultMaterial";
+
+export const EXPLOSIVE_BARRERL_MESH = "defaultMaterial";
+export const EXPLOSIVE_BARRERL_MATERIAL = "Liquid_Drum";
+
+export const WALL_MESH = "Object_2";
+export const WALL_MATERIAL = "Material";

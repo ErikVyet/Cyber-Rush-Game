@@ -16,7 +16,7 @@ export default function Game() {
     const [shipHealth, setShipHealth] = useState(100);
     const [coins, setCoins] = useState<[number, number, number, number]>([0, 0, 0, 0]);
     const [powerUpDurations, setPowerUpDurations] = useState<{ doublePoint: number, damageBoost: number, invisible: number, magnet: number, performanceBoost: number }>({ doublePoint: 0, damageBoost: 0, invisible: 0, magnet: 0, performanceBoost: 0 });
-    const [laserDamage, setLaserDamage] = useState(25);
+    const [laserDamage, setLaserDamage] = useState(10);
     const [iteration, setIteration] = useState(0);
     const [score, setScore] = useState(0);
     const [isRunning, setIsRunning] = useState(true);

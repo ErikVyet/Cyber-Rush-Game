@@ -1,36 +1,35 @@
-import { Box, Stack, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { GameContext } from "../../contexts/GameContext";
+import { Box } from "@mui/material";
+import { amber, green, red } from "@mui/material/colors";
+import { Html } from "@react-three/drei";
+import { motion } from "motion/react";
+import { useMemo } from "react";
 
-export default function HealthBar() {
-    const gameContext = useContext(GameContext);
-    if (!gameContext) return null;
-    const { shipHealth } = gameContext;
+type HealthBarProps = {
+    position: [x: number, y: number, z: number],
+    health: number,
+    maxHealth: number,
+    size?: "small" | "medium"
+}
 
-    const [healthColor, setHealthColor] = useState("bg-green-500/90");
-    const [textColor, setTextColor] = useState("text-green-500");
-
-    useEffect(() => {
-        if (shipHealth >= 70) {
-            setHealthColor("from-green-500/70 to-green-400/70");
-            setTextColor("text-green-500");
+export default function HealthBar({ position, health, maxHealth, size = "small" }: HealthBarProps) {
+    const healthBarColor = useMemo(() => {
+        const percentage = health / maxHealth * 100;
+        if (percentage >= 70) {
+            return green[500];
         }
-        else if (shipHealth >= 30) {
-            setHealthColor("from-amber-500/70 to-amber-400/70");
-            setTextColor("text-amber-500");
+        else if (percentage >= 30) {
+            return amber[500];
         }
         else {
-            setHealthColor("from-red-500/70 to-red-400/70");
-            setTextColor("text-red-500");
+            return red[500];
         }
-    }, [shipHealth]);
+    }, [health]);
 
     return (
-        <Stack className="items-center justify-center gap-3" direction={"row"}>
-            <Box className="h-4 w-sm outline-2 outline-white rounded-full">
-                <Box className={`h-full bg-linear-to-r ${healthColor} rounded-full transition-[width] duration-300`} sx={{ width: `${shipHealth}%` }}/>
+        <Html position={position} distanceFactor={4} center sprite>
+            <Box className={`${size === "small" ? "w-2xs" : "w-md"} h-5 outline-2 outline-zinc-100 rounded-full overflow-hidden`}>
+                <Box className="h-full opacity-90" component={motion.div} initial={{ width: "100%", backgroundColor: green[500] }} animate={{ width: `${health / maxHealth * 100}%`, backgroundColor: healthBarColor }}/>
             </Box>
-            <Typography className={`text-lg! font-jura! font-semibold! ${textColor}`}>{shipHealth}%</Typography>
-        </Stack>
+        </Html>
     );
 }

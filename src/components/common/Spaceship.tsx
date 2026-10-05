@@ -3,12 +3,13 @@ import { ModelPath } from "../../enums/ModelPath";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Euler, MathUtils, Quaternion, type Group } from "three";
 import type { Mesh } from "three";
-import { CuboidCollider, MeshCollider, RigidBody, type RapierRigidBody } from "@react-three/rapier";
+import { ConeCollider, CuboidCollider, RigidBody, type RapierRigidBody } from "@react-three/rapier";
 import { GameContext } from "../../contexts/GameContext";
 import { useFrame } from "@react-three/fiber";
 import { ACCELERATE_SPEED, LANE_LAMBDA, LANE_WIDTH, MAX_HEIGHT, MAX_TRAVEL_SPEED, MAX_X, MIN_X, ROAD_COUNT, ROLL_FACTOR, ROLL_X_LAMBDA, ROLL_Y_LAMBDA } from "../../constants/scene";
 import { useModel } from "../../hooks/useModel";
 import LaserBeam from "./LaserBeam";
+import { ActiveCollisionTypes } from "@dimforge/rapier3d-compat";
 
 export default function Spaceship() {
     const gameContext = useContext(GameContext);
@@ -174,12 +175,11 @@ export default function Spaceship() {
 
     return (
         <>
-            <RigidBody ref={shipRef} name={"player"} type={"kinematicPosition"} colliders={false} enabledRotations={[false, true, true]}>
-                <MeshCollider type={"hull"}>
-                    <group ref={groupRef} position={[0, 0, 0]} scale={0.03} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
-                        <primitive object={scene} />
-                    </group>
-                </MeshCollider>
+            <RigidBody ref={shipRef} name={"player"} type={"kinematicPosition"} colliders={"hull"} activeCollisionTypes={ActiveCollisionTypes.KINEMATIC_FIXED} enabledRotations={[false, true, true]}>
+                <group ref={groupRef} position={[0, 0, 0]} scale={0.03} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
+                    <primitive object={scene} />
+                </group>
+                <ConeCollider name={"spaceship"} args={[1, 0.5]} position={[0, -0.07, 0.5]} rotation={[-Math.PI / 2, 0, 0]} sensor/>
                 <CuboidCollider args={[0.8 * (magnet > 0 ? 6 : 1), 0.2 * (magnet > 0 ? 6 : 1), 0.9]} position={[0, 0, 0.6]}/>
                 <PerspectiveCamera position={[0, 1, 4.5]} lookAt={() => [0, 0, 0]} makeDefault/>
             </RigidBody>

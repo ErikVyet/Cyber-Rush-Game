@@ -25,8 +25,9 @@ export const LANE_LAMBDA = 2;
 export const LASER_BEAM_WIDTH = 0.04;
 export const LASER_BEAM_HEIGHT = 0.04;
 export const LASER_BEAM_DEPTH = 0.5;
-export const LASER_BEAM_MAX_TRAVEL_DISTANCE = 40;
-export const LASER_BEAM_TRAVEL_SPEED = MAX_TRAVEL_SPEED + 6 * LASER_BEAM_MAX_TRAVEL_DISTANCE;
+export const LASER_BEAM_MAX_TRAVEL_DISTANCE = 20;
+export const LASER_BEAM_TRAVEL_SPEED = MAX_TRAVEL_SPEED / 8;
+export const LASER_BEAM_BASE_DAMAGE = 25;
 
 // Coin's constant properties
 export const COIN_SPIN_SPEED = 1 / 100;
@@ -86,3 +87,15 @@ export const OBJECT_PATTERNS = [
         [0, 2, 0]
     ]
 ];
+
+export const EXPLOSIVE_BARREL_MAX_HEALTH = 50;
+export const EXPLOSIVE_BARREL_DAMAGE = 50;
+
+export const WALL_MAX_HEALTH = 75;
+export const WALL_DAMAGE = 30;
+
+export const NPC_MAX_HEALTH = 100;
+export const NPC_DAMAGE = 25;
+
+export const MAX_OBSTACLE_COUNT = 18;
+export const OBSTACLE_Z_GAP = 30;

@@ -14,3 +14,5 @@ useGLTF.preload(ModelPath.INVISIBLE);
 useGLTF.preload(ModelPath.MAGNET);
 useGLTF.preload(ModelPath.PERFORMANCE_BOOST);
 useGLTF.preload(ModelPath.REPAIR_KIT);
+useGLTF.preload(ModelPath.EXPLOSIVE_BARREL);
+useGLTF.preload(ModelPath.WALL);

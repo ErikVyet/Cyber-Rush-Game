@@ -1,11 +1,11 @@
 import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { Pause, PlayArrow } from "@mui/icons-material";
-import HealthBar from "../common/HealthBar";
-import TimerDisplay from "../common/TimerDisplay";
+import HealthBar from "./HealthBar";
+import TimerDisplay from "./TimerDisplay";
 import { useContext } from "react";
 import { GameContext } from "../../contexts/GameContext";
-import CoinDisplay from "../common/CoinDisplay";
-import PowerUpDurationsDisplay from "../common/PowerUpDurationsDisplay";
+import CoinDisplay from "./CoinDisplay";
+import PowerUpDurationsDisplay from "./PowerUpDurationsDisplay";
 
 export default function Header() {
     const gameContext = useContext(GameContext);
